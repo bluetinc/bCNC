@@ -32,8 +32,14 @@ except:
 __prg__     = "bCNC"
 prgpath   = os.path.abspath(os.path.dirname(sys.argv[0]))
 iniSystem = os.path.join(prgpath,"%s.ini"%(__prg__))
-iniUser   = os.path.expanduser("~/.%s" % (__prg__))
-hisFile   = os.path.expanduser("~/.%s.history" % (__prg__))
+testUserHome = os.environ.get('HOME')
+if testUserHome is None:
+	iniUser   = os.path.expanduser("~/.%s" % (__prg__))
+	hisFile   = os.path.expanduser("~/.%s.history" % (__prg__))
+else:
+	tempIniUser = os.environ.get('USERPROFILE')
+	iniUser   = ("%s/.%s" % (tempIniUser, __prg__))
+	hisFile   = ("%s/.%s.history" % (tempIniUser, __prg__))
 
 # dirty way of substituting the "_" on the builtin namespace
 #__builtin__.__dict__["_"] = gettext.translation('bCNC', 'locale', fallback=True).ugettext
